@@ -73,6 +73,13 @@ const toggleCompleted = (targetId, checkbox) => {
 };
 
 // todo 삭제하기
+const removeTodo = targetId => {
+  todos = todos.filter(todo => todo.id !== +targetId);
+
+  render();
+};
+
+// 개수 세기
 
 // 💚 이벤트 핸들러 등록 모음
 // 가장 먼저 데이터 fetch 해오기
@@ -91,4 +98,9 @@ $todos.onchange = e => {
   toggleCompleted(e.target.parentNode.getAttribute('id'), e.target);
 };
 
-// todo 삭제하기
+// todo 삭제하기(이벤트 위임)
+$todos.onclick = e => {
+  if (e.target.matches('i')) removeTodo(e.target.parentNode.getAttribute('id'));
+};
+
+// 개수 세기
