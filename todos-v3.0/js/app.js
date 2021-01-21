@@ -6,22 +6,49 @@ const $todos = document.querySelector('ul.todos');
 const $input = document.querySelector('.input-todo');
 const $numOfCompleted = document.querySelector('span.completed-todos');
 const $numOfActive = document.querySelector('strong.active-todos');
+const $allTab = document.getElementById('all');
+const $activeTab = document.getElementById('active');
+const $completedTab = document.getElementById('completed');
 
 // 💚 이벤트 핸들러 모음
 // 렌더링
 const render = () => {
   let html = '';
 
-  todos.forEach(todo => {
-    html += `<li id="${todo.id}" class="todo-item">
-    <input id="ck-${todo.id}" class="checkbox" type="checkbox" ${todo.completed ? 'checked' : ''}/>
-    <label for="ck-${todo.id}">${todo.content}</label>
-    <i class="remove-todo far fa-times-circle"></i>
-  </li>
-  `;
+  if ($allTab.className === 'active') {
+    todos.forEach(todo => {
+      html += `<li id="${todo.id}" class="todo-item">
+      <input id="ck-${todo.id}" class="checkbox" type="checkbox" ${todo.completed ? 'checked' : ''}/>
+      <label for="ck-${todo.id}">${todo.content}</label>
+      <i class="remove-todo far fa-times-circle"></i>
+    </li>
+    `;
+    });
+  } else if ($activeTab.className === 'active') {
+    todos.forEach(todo => {
+      if (!todo.completed) {
+        html += `<li id="${todo.id}" class="todo-item">
+      <input id="ck-${todo.id}" class="checkbox" type="checkbox" ${todo.completed ? 'checked' : ''}/>
+      <label for="ck-${todo.id}">${todo.content}</label>
+      <i class="remove-todo far fa-times-circle"></i>
+    </li>
+    `;
+      }
+    });
+  } else {
+    todos.forEach(todo => {
+      if (todo.completed) {
+        html += `<li id="${todo.id}" class="todo-item">
+      <input id="ck-${todo.id}" class="checkbox" type="checkbox" ${todo.completed ? 'checked' : ''}/>
+      <label for="ck-${todo.id}">${todo.content}</label>
+      <i class="remove-todo far fa-times-circle"></i>
+    </li>
+    `;
+      }
+    });
+  }
 
-    $todos.innerHTML = html;
-  });
+  $todos.innerHTML = html;
 
   // 개수 세기
   let cnt = 0;
@@ -120,3 +147,29 @@ $todos.onclick = e => {
   if (e.target.matches('i')) removeTodo(e.target.parentNode.getAttribute('id'));
 };
 
+// Show All items
+$allTab.onclick = e => {
+  e.target.classList.toggle('active');
+  $activeTab.classList.toggle('active', false);
+  $completedTab.classList.toggle('active', false);
+
+  render();
+};
+
+// Show Active items
+$activeTab.onclick = e => {
+  e.target.classList.toggle('active');
+  $allTab.classList.toggle('active', false);
+  $completedTab.classList.toggle('active', false);
+
+  render();
+};
+
+// Show Completed items
+$completedTab.onclick = e => {
+  e.target.classList.toggle('active');
+  $allTab.classList.toggle('active', false);
+  $activeTab.classList.toggle('active', false);
+
+  render();
+};
