@@ -4,6 +4,8 @@ let todos = [];
 // 💚 요소 노드 취득 모음
 const $todos = document.querySelector('ul.todos');
 const $input = document.querySelector('.input-todo');
+const $numOfCompleted = document.querySelector('span.completed-todos');
+const $numOfActive = document.querySelector('strong.active-todos');
 
 // 💚 이벤트 핸들러 모음
 // 렌더링
@@ -20,6 +22,21 @@ const render = () => {
 
     $todos.innerHTML = html;
   });
+
+  // 개수 세기
+  let cnt = 0;
+  const countCompleted = (() => {
+    $numOfCompleted.textContent = todos.reduce((_, todo) => {
+      if (todo.completed) return ++cnt;
+      else return cnt;
+    }, 0);
+  })();
+
+  const countActive = (() => {
+    let cntTodos = 0;
+    todos.reduce(() => ++cntTodos, 0);
+    $numOfActive.textContent = cntTodos - cnt;
+  })();
 };
 
 // 데이터를 ID순으로 정렬
@@ -79,8 +96,6 @@ const removeTodo = targetId => {
   render();
 };
 
-// 개수 세기
-
 // 💚 이벤트 핸들러 등록 모음
 // 가장 먼저 데이터 fetch 해오기
 document.addEventListener('DOMContentLoaded', fetchTodos);
@@ -90,6 +105,8 @@ $input.onkeyup = e => {
   if (e.key !== 'Enter') return;
 
   addTodo(e.target.value);
+
+  // 입력창 초기화
   e.target.value = '';
 };
 
@@ -103,4 +120,3 @@ $todos.onclick = e => {
   if (e.target.matches('i')) removeTodo(e.target.parentNode.getAttribute('id'));
 };
 
-// 개수 세기
