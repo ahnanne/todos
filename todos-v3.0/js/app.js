@@ -6,6 +6,7 @@ const $todos = document.querySelector('ul.todos');
 const $input = document.querySelector('.input-todo');
 const $numOfCompleted = document.querySelector('span.completed-todos');
 const $numOfActive = document.querySelector('strong.active-todos');
+const $nav = document.querySelector('.nav');
 const $allTab = document.getElementById('all');
 const $activeTab = document.getElementById('active');
 const $completedTab = document.getElementById('completed');
@@ -147,29 +148,14 @@ $todos.onclick = e => {
   if (e.target.matches('i')) removeTodo(e.target.parentNode.getAttribute('id'));
 };
 
-// Show All items
-$allTab.onclick = e => {
-  e.target.classList.toggle('active');
-  $activeTab.classList.toggle('active', false);
-  $completedTab.classList.toggle('active', false);
+// 탭별 item 조회하기
+$nav.onclick = e => {
+  if (e.target === e.currentTarget) return;
 
-  render();
-};
-
-// Show Active items
-$activeTab.onclick = e => {
-  e.target.classList.toggle('active');
-  $allTab.classList.toggle('active', false);
-  $completedTab.classList.toggle('active', false);
-
-  render();
-};
-
-// Show Completed items
-$completedTab.onclick = e => {
-  e.target.classList.toggle('active');
-  $allTab.classList.toggle('active', false);
-  $activeTab.classList.toggle('active', false);
+  e.target.classList.toggle('active', true);
+  [...e.currentTarget.children].forEach(node => {
+    if (node.matches('ul.nav > li') && node !== e.target) node.classList.toggle('active', false);
+  });
 
   render();
 };
