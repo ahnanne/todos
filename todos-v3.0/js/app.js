@@ -65,6 +65,15 @@ const addTodo = newTodo => {
   render();
 };
 
+// 체크박스 체크 여부에 따라 데이터 갱신하기
+const toggleCompleted = (targetId, checkbox) => {
+  todos = todos.map(todo => todo.id === +targetId ? { ...todo, completed: checkbox.checked ? true : false } : todo);
+
+  render();
+};
+
+// todo 삭제하기
+
 // 💚 이벤트 핸들러 등록 모음
 // 가장 먼저 데이터 fetch 해오기
 document.addEventListener('DOMContentLoaded', fetchTodos);
@@ -76,3 +85,10 @@ $input.onkeyup = e => {
   addTodo(e.target.value);
   e.target.value = '';
 };
+
+// 체크박스 체크 여부에 따라 데이터 갱신하기(이벤트 위임)
+$todos.onchange = e => {
+  toggleCompleted(e.target.parentNode.getAttribute('id'), e.target);
+};
+
+// todo 삭제하기
