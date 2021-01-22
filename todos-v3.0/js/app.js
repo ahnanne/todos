@@ -11,6 +11,7 @@ const $allTab = document.getElementById('all');
 const $activeTab = document.getElementById('active');
 const $completedTab = document.getElementById('completed');
 const $ckAll = document.getElementById('ck-complete-all');
+const $clearBtn = document.querySelector('.clear-completed > button.btn');
 
 // 💚 이벤트 핸들러 모음
 // item 개수 세기
@@ -175,6 +176,13 @@ const markAllck = () => {
   render();
 };
 
+// Clear completed
+const clearCompleted = () => {
+  todos = todos.filter(todo => todo.completed !== true);
+
+  render();
+};
+
 // 💚 이벤트 핸들러 등록 모음
 // 가장 먼저 데이터 fetch 해오기
 document.addEventListener('DOMContentLoaded', fetchTodos);
@@ -218,4 +226,11 @@ $nav.onclick = e => {
 // Mark all as complete
 $ckAll.onchange = () => {
   markAllck();
+};
+
+// Clear completed
+$clearBtn.onclick = () => {
+  clearCompleted();
+
+  if ($ckAll.checked) $ckAll.checked = false;
 };
