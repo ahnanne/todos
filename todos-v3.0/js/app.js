@@ -169,6 +169,16 @@ const removeTodo = targetId => {
   render();
 };
 
+// 탭별 item 조회하기
+const showEachTab = (targetTab, array) => {
+  targetTab.classList.toggle('active', true);
+  array.forEach(node => {
+    if (node.matches('ul.nav > li') && node !== targetTab) node.classList.toggle('active', false);
+  });
+
+  render();
+};
+
 // Mark all as complete
 const markAllck = () => {
   todos = todos.map(todo => ({ ...todo, completed: true }));
@@ -213,12 +223,7 @@ $todos.onclick = e => {
 $nav.onclick = e => {
   if (e.target === e.currentTarget) return;
 
-  e.target.classList.toggle('active', true);
-  [...e.currentTarget.children].forEach(node => {
-    if (node.matches('ul.nav > li') && node !== e.target) node.classList.toggle('active', false);
-  });
-
-  render();
+  showEachTab(e.target, [...e.currentTarget.children]);
 
   if ($ckAll.checked) $ckAll.checked = false;
 };
