@@ -16,6 +16,7 @@ const $completedTab = document.getElementById('completed');
 const render = () => {
   let html = '';
 
+  // 조회 중인 탭별 렌더링
   if ($allTab.className === 'active') {
     todos.forEach(todo => {
       html += `<li id="${todo.id}" class="todo-item">
@@ -124,6 +125,8 @@ const removeTodo = targetId => {
   render();
 };
 
+// Mark all as complete
+
 // 💚 이벤트 핸들러 등록 모음
 // 가장 먼저 데이터 fetch 해오기
 document.addEventListener('DOMContentLoaded', fetchTodos);
@@ -159,3 +162,5 @@ $nav.onclick = e => {
 
   render();
 };
+
+// Mark all as complete
