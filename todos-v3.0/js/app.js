@@ -169,6 +169,11 @@ const removeTodo = targetId => {
 };
 
 // Mark all as complete
+const markAllck = () => {
+  todos = todos.map(todo => ({ ...todo, completed: true }));
+
+  render();
+};
 
 // 💚 이벤트 핸들러 등록 모음
 // 가장 먼저 데이터 fetch 해오기
@@ -182,6 +187,8 @@ $input.onkeyup = e => {
 
   // 입력창 초기화
   e.target.value = '';
+
+  if ($ckAll.checked) $ckAll.checked = false;
 };
 
 // 체크박스 체크 여부에 따라 데이터 갱신하기(이벤트 위임)
@@ -204,6 +211,11 @@ $nav.onclick = e => {
   });
 
   render();
+
+  if ($ckAll.checked) $ckAll.checked = false;
 };
 
 // Mark all as complete
+$ckAll.onchange = () => {
+  markAllck();
+};
