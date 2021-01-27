@@ -8,9 +8,6 @@ const $input = document.querySelector('.input-todo');
 const $numOfCompleted = document.querySelector('span.completed-todos');
 const $numOfActive = document.querySelector('strong.active-todos');
 const $nav = document.querySelector('.nav');
-const $allTab = document.getElementById('all');
-const $activeTab = document.getElementById('active');
-const $completedTab = document.getElementById('completed');
 const $ckAll = document.getElementById('ck-complete-all');
 const $clearBtn = document.querySelector('.clear-completed > button.btn');
 
@@ -23,7 +20,7 @@ const countNum = () => {
   // count completed
   todos.reduce((_, todo) => {
     if (todo.completed) return ++cnt;
-    else return cnt;
+    return cnt;
   }, 0);
   $numOfCompleted.textContent = cnt;
 
@@ -37,13 +34,22 @@ const render = () => {
   let html = '';
 
   // 조회 중인 탭별 렌더링
+  /*
   const _todos = todos.filter(todo => {
     if (navState === 'All') return true;
     else if (navState === 'Active') return !todo.completed;
 
     return todo.completed;
   });
-  _todos.forEach(({ id, content, completed }) => {
+  */
+  // 위 코드를 삼항 조건 연산자를 사용하여 바꿔보면 아래와 같음.
+  const _todos = todos.filter(todo => navState === 'All' ? true : (navState === 'Active' ? !todo.completed : todo.completed));
+
+  _todos.forEach(({
+    id,
+    content,
+    completed
+  }) => {
     html += `<li id="${id}" class="todo-item">
     <input id="ck-${id}" class="checkbox" type="checkbox" ${(completed ? 'checked' : '')} />
     <label for="ck-${id}">${content}</label>
@@ -67,22 +73,21 @@ const sortData = () => {
 // 가장 먼저 데이터 fetch 해오기
 const fetchTodos = () => {
   // TODO: 데이터 취득(잠정 처리)
-  todos = [
-    {
-      id: 1,
-      content: "HTML",
-      completed: false
-    },
-    {
-      id: 3,
-      content: "JavaScript",
-      completed: false
-    },
-    {
-      id: 2,
-      content: "CSS",
-      completed: false
-    }
+  todos = [{
+    id: 1,
+    content: "HTML",
+    completed: false
+  },
+  {
+    id: 3,
+    content: "JavaScript",
+    completed: false
+  },
+  {
+    id: 2,
+    content: "CSS",
+    completed: false
+  }
   ];
 
   sortData();
@@ -120,9 +125,12 @@ const addTodo = newTodo => {
 
 // 체크박스 체크 여부에 따라 데이터 갱신하기
 const toggleCompleted = (targetId, checkbox) => {
-  todos = todos.map(todo => todo.id === +targetId
-    ? { ...todo, completed: checkbox.checked ? true : false }
-    : todo);
+  todos = todos.map(todo => todo.id === +targetId ?
+    {
+      ...todo,
+      completed: checkbox.checked ? true : false
+    } :
+    todo);
 
   render();
 };
@@ -137,7 +145,7 @@ const removeTodo = targetId => {
 // 탭별 item 조회하기(navState 변경하기)
 const changeNavState = (tab, classlist) => {
   if (classlist.contains('active')) return;
-  
+
   // change navState
   navState = tab.textContent;
 
@@ -150,7 +158,10 @@ const changeNavState = (tab, classlist) => {
 
 // Mark all as complete
 const markAllck = () => {
-  todos = todos.map(todo => ({ ...todo, completed: true }));
+  todos = todos.map(todo => ({
+    ...todo,
+    completed: true
+  }));
 
   render();
 };
